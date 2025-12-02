@@ -1,6 +1,13 @@
+package org.example;
 class Problema2 {
 
-    public void calcularTarifa(int edad, int numeroVuelos, boolean esEstudiante, String tipoClase, int numDesplazamientosMes, boolean trabaja, boolean viveConPadres, double ingresos, String destino, boolean viajaConNinos, int edadNinos, double precioVuelo, int numBilletes) {
+    public static void main(String[] args){
+        String tarifa = "";
+        tarifa = calcularTarifa(45,10,false,"business",0,true,false,38000,"Asia",true,6,500,4);
+        System.out.println(tarifa);
+
+    }
+    public static String calcularTarifa(int edad, int numeroVuelos, boolean esEstudiante, String tipoClase, int numDesplazamientosMes, boolean trabaja, boolean viveConPadres, double ingresos, String destino, boolean viajaConNinos, int edadNinos, double precioVuelo, int numBilletes) {
 
         String tarifa = "Sin tarifa"; //inicializacion de la tarifa por si no se cumple ningun tipo de condicion de tarifa
 
@@ -9,7 +16,7 @@ class Problema2 {
 
         if (edad < 18 && numeroVuelos >= 6) {
             tarifa = "Pajarillo";
-            precioVuelo = precioVuelo * 0.90;
+            precioVuelo = calcularPrecioVuelo(tarifa, precioVuelo,numBilletes);
         }
 
         /* 2- Gorrión:  Si el cliente tiene entre 18 y 25 años y está estudiando en una universidad en otra
@@ -20,7 +27,7 @@ class Problema2 {
         if (edad >= 18 || edad <= 25 && esEstudiante && tipoClase.equals("turista") && numDesplazamientosMes >= 1) {
 
             tarifa = "Gorrión";
-            precioVuelo = precioVuelo * 0.85;
+            precioVuelo = calcularPrecioVuelo(tarifa, precioVuelo,numBilletes);
         }
 
         /* 3- Viaja ahora que puedes / Atreviéndose a saltar del Nido: Si el cliente tiene entre 18 y 25 años, y si ha empezado a trabajar, pero vive aun con sus
@@ -33,12 +40,12 @@ class Problema2 {
 
             if (viveConPadres) {
                 tarifa = "Viaja ahora que puedes";
-                precioVuelo = precioVuelo * 0.95; // 5% descuento
+                precioVuelo = calcularPrecioVuelo(tarifa, precioVuelo,numBilletes); // 5% descuento
             }
 
             if (!viveConPadres) {
                 tarifa = "Atreviéndose a saltar del Nido";
-                precioVuelo = precioVuelo * 0.75; // 25% descuento
+                precioVuelo = calcularPrecioVuelo(tarifa, precioVuelo,numBilletes); // 25% descuento
             }
         }
 
@@ -52,12 +59,12 @@ class Problema2 {
 
             if (!viajaConNinos) {
                 tarifa = "Conoce Europa";
-                precioVuelo = precioVuelo * 0.85; // 15%
+                precioVuelo = calcularPrecioVuelo(tarifa, precioVuelo,numBilletes); // 15%
             }
 
             if (viajaConNinos && edadNinos < 12) {
                 tarifa = "Conoce Europa con tus peques";
-                precioVuelo = (precioVuelo * 0.90)*numBilletes; // 10%
+                precioVuelo = calcularPrecioVuelo(tarifa, precioVuelo,numBilletes); // 10%
             }
         }
 
@@ -72,14 +79,47 @@ class Problema2 {
 
             if (!viajaConNinos) {
                 tarifa = "Conoce el Mundo";
-                precioVuelo = precioVuelo * 0.80; // 20%
+                precioVuelo = calcularPrecioVuelo(tarifa, precioVuelo,numBilletes); // 20%
             }
 
             if (viajaConNinos && edadNinos < 12) {
                 tarifa = "Conoce el Mundo con tus peques";
-                precioVuelo = (precioVuelo * 0.90)*numBilletes; // 10%
+                precioVuelo = calcularPrecioVuelo(tarifa, precioVuelo,numBilletes); // 10%
             }
         }
+        return tarifa;
+    }
 
+    public static double calcularPrecioVuelo(String tarifa, double precioVuelo, int numBillestes){
+        double precio = 0.0;
+        switch (tarifa) {
+            case "Pajarillo":
+                precio = precioVuelo * 0.90;
+                break;
+            case "Gorrión":
+                precio = precioVuelo * 0.85;
+                break;
+            case "Viaja ahora que puedes":
+                precio = precioVuelo * 0.95;
+                break;
+            case "Atreviéndose a saltar del Nido":
+                precio = precioVuelo * 0.75;
+                break;
+            case "Conoce Europa":
+                precio = precioVuelo * 0.85;
+                break;
+            case "Conoce Europa con tus peques":
+                precio = (precioVuelo * 0.90) * numBillestes;
+                break;
+            case "Conoce el Mundo":
+                precio = precioVuelo * 0.80;
+                break;
+            case "Conoce el Mundo con tus peques":
+                precio = (precioVuelo * 0.90) * numBillestes;
+                break;
+            default:
+                break;
+        }
+        return precio;
     }
 }
