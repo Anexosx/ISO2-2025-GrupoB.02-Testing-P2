@@ -1,22 +1,24 @@
 package org.example;
+
 class Problema2 {
 
     public static void main(String[] args){
         String tarifa = "";
         tarifa = calcularTarifa(45,10,false,"business",0,true,false,38000,"Asia",true,6,500,4);
         System.out.println(tarifa);
-
     }
+
     public static String calcularTarifa(int edad, int numeroVuelos, boolean esEstudiante, String tipoClase, int numDesplazamientosMes, boolean trabaja, boolean viveConPadres, double ingresos, String destino, boolean viajaConNinos, int edadNinos, double precioVuelo, int numBilletes) {
 
         String tarifa = "Sin tarifa"; //inicializacion de la tarifa por si no se cumple ningun tipo de condicion de tarifa
+        double precioFinal = precioVuelo * numBilletes;
 
         /* 1- Pajarillo: Si el cliente es menor de edad, y realiza al menos 6 vuelos al año, el tipo de tarifa que se
            le puede ofrecer es “Pajarillo” (con un descuento de 10% sobre el precio del vuelo). */
 
         if (edad < 18 && numeroVuelos >= 6) {
             tarifa = "Pajarillo";
-            precioVuelo = calcularPrecioVuelo(tarifa, precioVuelo,numBilletes);
+            precioFinal = calcularPrecioVuelo(tarifa, precioVuelo, numBilletes);
         }
 
         /* 2- Gorrión:  Si el cliente tiene entre 18 y 25 años y está estudiando en una universidad en otra
@@ -24,10 +26,10 @@ class Problema2 {
            durante los meses del curso entre ambas ciudades, se le ofrecerá la tarifa “Gorrión” (con
            un descuento del 15% sobre el precio del vuelo).  */
 
-        if (edad >= 18 || edad <= 25 && esEstudiante && tipoClase.equals("turista") && numDesplazamientosMes >= 1) {
+        if ((edad >= 18 && edad <= 25) && esEstudiante && tipoClase.equals("turista") && numDesplazamientosMes >= 1) {
 
             tarifa = "Gorrión";
-            precioVuelo = calcularPrecioVuelo(tarifa, precioVuelo,numBilletes);
+            precioFinal = calcularPrecioVuelo(tarifa, precioVuelo, numBilletes);
         }
 
         /* 3- Viaja ahora que puedes / Atreviéndose a saltar del Nido: Si el cliente tiene entre 18 y 25 años, y si ha empezado a trabajar, pero vive aun con sus
@@ -40,12 +42,12 @@ class Problema2 {
 
             if (viveConPadres) {
                 tarifa = "Viaja ahora que puedes";
-                precioVuelo = calcularPrecioVuelo(tarifa, precioVuelo,numBilletes); // 5% descuento
+                precioFinal = calcularPrecioVuelo(tarifa, precioVuelo, numBilletes); // 5% descuento
             }
 
             if (!viveConPadres) {
                 tarifa = "Atreviéndose a saltar del Nido";
-                precioVuelo = calcularPrecioVuelo(tarifa, precioVuelo,numBilletes); // 25% descuento
+                precioFinal = calcularPrecioVuelo(tarifa, precioVuelo, numBilletes); // 25% descuento
             }
         }
 
@@ -59,12 +61,12 @@ class Problema2 {
 
             if (!viajaConNinos) {
                 tarifa = "Conoce Europa";
-                precioVuelo = calcularPrecioVuelo(tarifa, precioVuelo,numBilletes); // 15%
+                precioFinal = calcularPrecioVuelo(tarifa, precioVuelo, numBilletes); // 15%
             }
 
             if (viajaConNinos && edadNinos < 12) {
                 tarifa = "Conoce Europa con tus peques";
-                precioVuelo = calcularPrecioVuelo(tarifa, precioVuelo,numBilletes); // 10%
+                precioFinal = calcularPrecioVuelo(tarifa, precioVuelo, numBilletes); // 10%
             }
         }
 
@@ -75,49 +77,54 @@ class Problema2 {
               Europa con tus peques” (con un descuento del 10% sobre el precio de cada uno de los
               billetes).  */
 
-        if (edad > 25 && ingresos >= 35000 && numeroVuelos >= 6 && tipoClase.equals("business") && destino.equals("Asia") || destino.equals("America")) {
+        if (edad > 25 && ingresos >= 35000 && numeroVuelos >= 6 &&
+                tipoClase.equals("business") &&
+                (destino.equals("Asia") || destino.equals("America"))) {
 
             if (!viajaConNinos) {
                 tarifa = "Conoce el Mundo";
-                precioVuelo = calcularPrecioVuelo(tarifa, precioVuelo,numBilletes); // 20%
+                precioFinal = calcularPrecioVuelo(tarifa, precioVuelo, numBilletes); // 20%
             }
 
             if (viajaConNinos && edadNinos < 12) {
                 tarifa = "Conoce el Mundo con tus peques";
-                precioVuelo = calcularPrecioVuelo(tarifa, precioVuelo,numBilletes); // 10%
+                precioFinal = calcularPrecioVuelo(tarifa, precioVuelo, numBilletes); // 10%
             }
         }
-        return tarifa;
+
+        return tarifa + " | Precio: " + precioFinal + " €";
     }
 
     public static double calcularPrecioVuelo(String tarifa, double precioVuelo, int numBillestes){
         double precio = 0.0;
+
         switch (tarifa) {
             case "Pajarillo":
-                precio = precioVuelo * 0.90;
+                precio = (precioVuelo * 0.90) * numBillestes;
                 break;
             case "Gorrión":
-                precio = precioVuelo * 0.85;
+                precio = (precioVuelo * 0.85) * numBillestes;
                 break;
             case "Viaja ahora que puedes":
-                precio = precioVuelo * 0.95;
+                precio = (precioVuelo * 0.95) * numBillestes;
                 break;
             case "Atreviéndose a saltar del Nido":
-                precio = precioVuelo * 0.75;
+                precio = (precioVuelo * 0.75) * numBillestes;
                 break;
             case "Conoce Europa":
-                precio = precioVuelo * 0.85;
+                precio = (precioVuelo * 0.85) * numBillestes;
                 break;
             case "Conoce Europa con tus peques":
                 precio = (precioVuelo * 0.90) * numBillestes;
                 break;
             case "Conoce el Mundo":
-                precio = precioVuelo * 0.80;
+                precio = (precioVuelo * 0.80) * numBillestes;
                 break;
             case "Conoce el Mundo con tus peques":
                 precio = (precioVuelo * 0.90) * numBillestes;
                 break;
             default:
+                precio = precioVuelo * numBillestes;
                 break;
         }
         return precio;
