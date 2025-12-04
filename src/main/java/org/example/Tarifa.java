@@ -1,13 +1,6 @@
-
-class Problema2 {
-
-    public static void main(String[] args){
-        String tarifa = "";
-        tarifa = calcularTarifa(45,10,false,"business",0,true,false,38000,"Asia",true,6,500,4);
-        System.out.println(tarifa);
-    }
-
-    public static String calcularTarifa(int edad, int numeroVuelos, boolean esEstudiante, String tipoClase, int numDesplazamientosMes, boolean trabaja, boolean viveConPadres, double ingresos, String destino, boolean viajaConNinos, int edadNinos, double precioVuelo, int numBilletes) {
+package org.example;
+class Tarifa {
+    public static String calcularTarifa(int edad, int numeroVuelos, boolean esEstudiante, String tipoClase, int numDesplazamientosMes, boolean trabaja, boolean viveConPadres, double ingresos, String destino, boolean viajaConNinos, int numNinos, int edadNinos, double precioVuelo, int numBilletes) {
 
         String tarifa = "Sin tarifa"; //inicializacion de la tarifa por si no se cumple ningun tipo de condicion de tarifa
         double precioFinal = precioVuelo * numBilletes;
