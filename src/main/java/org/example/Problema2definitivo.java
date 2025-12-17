@@ -4,7 +4,7 @@ class Problema2 {
 
     public static void main(String[] args){
         String tarifa;
-        tarifa = calcularTarifa(45,10,false,"business",0,true,false,38000,"Asia",true,6,500,4);
+        tarifa = calcularTarifa(45 ,10,false,"business",0,true,false,38000,"Asia",true,6,500,4);
         System.out.println(tarifa);
     }
 
